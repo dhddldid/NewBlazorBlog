@@ -1,1 +1,1 @@
-"# Study Blazor Blog Series" 
+# Study Blazor Blog Series
