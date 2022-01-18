@@ -1,1 +1,1 @@
-"# VanillaJS" 
+"# Study Blazor Blog Series" 
