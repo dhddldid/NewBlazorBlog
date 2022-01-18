@@ -1,0 +1,36 @@
+﻿@page "/posts/{url}"
+@inject NewBlazorBlog.Client.Services.IBlogService BlogService
+
+@if (CurrentPost is null)
+{
+    <span>Getting that blog post from the service...</span>
+}
+else
+{
+    <h3>@CurrentPost.Title</h3>
+
+    <div>
+        @CurrentPost.Content
+    </div>
+}
+
+
+@code{
+    private BlogPost CurrentPost;
+
+    [Parameter]
+    public string Url { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("OnInit");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("OnInit2");
+
+        CurrentPost = await BlogService.GetBlogPostByUrl(Url);
+    }
+}

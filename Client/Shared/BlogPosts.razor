@@ -1,0 +1,27 @@
+﻿@inject NewBlazorBlog.Client.Services.IBlogService BlogService
+
+@foreach (var post in Posts)
+{
+    <div style="margin: 20px;">
+        <div>
+            @post.Title
+        </div>
+        <div>
+            @post.Description
+        </div>
+        <div>
+            <a href="/posts/@post.Url">Read more...</a>
+        </div>
+    </div>
+}
+
+
+@code{
+    private List<BlogPost> Posts = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Posts = await BlogService.GetblogPosts();
+    }
+}
