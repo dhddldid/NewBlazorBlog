@@ -1,0 +1,59 @@
+﻿@page "/create"
+@inject NewBlazorBlog.Client.Services.IBlogService BlogService
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+<h3>Create a new Blog Post</h3>
+
+<EditForm Model="@newBlogPost" OnValidSubmit="CreateNewBlogPost">
+    <DataAnnotationsValidator />
+    <div class="form-g">
+        <label for="title">Title</label>
+        <InputText id="title" @bind-Value="newBlogPost.Title" class="form-control" />
+        <ValidationMessage For="@(() => newBlogPost.Title)" />
+    </div>
+    <div class="form-g">
+        <label for="url">url</label>
+        <InputText id="url" @bind-Value="newBlogPost.Url" class="form-control" />
+        <ValidationMessage For="@(() => newBlogPost.Url)" />
+    </div>
+    <div class="form-g">
+        <label for="description">Description</label>
+        <InputText id="description" @bind-Value="newBlogPost.Description" class="form-control" />
+    </div>
+    <div class="form-g">
+        <label for="content">Content</label>
+        <InputTextArea id="content" @bind-Value="newBlogPost.Content" class="form-control" />
+    </div>
+    <div class="form-g">
+        <label for="date">Date</label>
+        <InputDate id="date" @bind-Value="newBlogPost.DateCreated" class="form-control" />
+    </div>
+    <div class="form-check">
+        <InputCheckbox id="isPublished" @bind-Value="newBlogPost.IsPublished" class="form-check-input" />
+        <label for="isPublished">Publish</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <ValidationSummary />
+</EditForm>
+
+@code {
+    BlogPost newBlogPost = new();
+
+    async Task CreateNewBlogPost()
+    {
+        // var result = await BlogService.CreateNewBlogPost(newBlogPost); 바뀜
+        // NavigationManager.NavigateTo($"posts/{result.Url}"); 바뀜
+
+        // 추가된 부분
+        var httpResponse = await Http.PostAsJsonAsync<BlogPost>($"api/BlogPost/CreateNewBlogPost", newBlogPost);
+
+        if (httpResponse.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Success");
+        }
+        else
+        {
+            Console.WriteLine("Faile");
+        }
+    }
+}

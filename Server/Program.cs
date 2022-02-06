@@ -1,14 +1,27 @@
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using NewBlazorBlog.Server.Data;
+using NewBlazorBlog.Server.Pratice.BlazorBlogPost.Services;
+using NewBlazorBlog.Server.Services.Foundation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+// Cosmos
+builder.Services.Configure<CosmosDbServiceOptions>(builder.Configuration.GetSection("CosmosDb"));
+builder.Services.AddSingleton<CosmosDbService>();
+
+// Pratice
+builder.Services.AddTransient<BlogPostService>();
+
+//builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().ConfigureApiBehaviorOptions(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("CosmosDb")));
+builder.Services.AddDbContext<DataContext>
+    (x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

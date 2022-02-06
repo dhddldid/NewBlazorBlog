@@ -17,6 +17,12 @@ namespace NewBlazorBlog.Client.Services
             this.http = http;
         }
 
+        public async Task<BlogPost> CreateNewBlogPost(BlogPost post)
+        {
+            var result = await http.PostAsJsonAsync("api/Blog", post);
+            return await result.Content.ReadFromJsonAsync<BlogPost>();
+        }
+
         public async Task<BlogPost> GetBlogPostByUrl(string url)
         {
             //var post = await http.GetFromJsonAsync<BlogPost>($"api/Blog/{url}");

@@ -6,5 +6,6 @@ namespace NewBlazorBlog.Client.Services
     {
         Task<List<BlogPost>> GetblogPosts();
         Task<BlogPost> GetBlogPostByUrl(string url);
+        Task<BlogPost> CreateNewBlogPost(BlogPost post);
     }
 }
